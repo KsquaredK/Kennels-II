@@ -1,5 +1,5 @@
 import React from "react";
-import { PropsAndState } from './animal/PropsAndState'
+// import { PropsAndState } from './animal/PropsAndState'
 
 export const Home = () => (
     <>
@@ -10,7 +10,7 @@ export const Home = () => (
             <div>Visit Us at the Nashville North Location</div>
             <div>500 Puppy Way</div>
         </address>
-        <PropsAndState yourName={"Pico"} />
+        {/* <PropsAndState yourName={"Pico"} /> */}
     </>
 )
 
