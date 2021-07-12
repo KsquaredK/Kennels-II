@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import { useHistory } from 'react-router-dom';
-import { LocationContext } from "../location/LocationProvider"
+import { LocationContext } from "./location/LocationProvider"
 import { EmployeeContext } from "./employee/EmployeeProvider"
 import "./Employee.css"
 

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react"
+import { useHistory } from "react-router-dom"
 import { AnimalContext } from "./AnimalProvider"
 import { AnimalCard } from "./AnimalCard"
 import "./Animal.css"
@@ -13,18 +14,24 @@ export const AnimalList = () => {
     console.log("AnimalList: useEffect - getAnimals")
     getAnimals()
   }, [])
+  const history = useHistory()
 
 
   return (
-    <div className="animals">
-      {console.log("AnimalList: Render", animals)}
-      {
-        animals.map(animal => {
-          return <AnimalCard key={animal.id} animal={animal} />
-        })
-      }
-    </div>
-  )
+    <>
+        <h2>Animals</h2>
+		<button onClick={() => {history.push("/animals/create")}}>
+            Add Animal
+        </button>
+        <div className="animals">
+        {
+			animals.map(animal => {
+				return <AnimalCard key={animal.id} animal={animal} />
+			})
+        }
+        </div>
+    </>
+)
 }
 // re the return statement, the key and animal arguments look like HTML attributes 
 // here, but they actually become properties on an object that gets passed as an argument.
@@ -35,3 +42,4 @@ const properties = {
 
     Animal(properties)
 } */
+
