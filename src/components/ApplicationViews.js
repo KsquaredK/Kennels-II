@@ -12,6 +12,7 @@ import { CustomerProvider } from "./customer/CustomerProvider"
 import { AnimalList } from "./animal/AnimalList"
 import { AnimalProvider } from "./animal/AnimalProvider"
 import { AnimalForm } from "./animal/AnimalForm"
+import { AnimalDetail } from "./animal/AnimalDetail"
 
 
 // a Controller Component
@@ -30,8 +31,11 @@ export const ApplicationViews = () => {
                         <Route exact path="/animals">
                             <AnimalList />
                         </Route>
-                        <Route exact path="/animals/create">
+                        <Route path="/animals/create">
                             <AnimalForm />
+                        </Route>
+                        <Route path="/animals/detail/:animalId(\d+)">
+                            <AnimalDetail />
                         </Route>
                     </CustomerProvider>
                 </LocationProvider>

@@ -7,11 +7,15 @@ export const AnimalContext = createContext()
 export const AnimalProvider = (props) => {
     const [animals, setAnimals] = useState([])
 
-    const getAnimals = () => {
-        return fetch("http://localhost:8088/animals?_expand=location")
-        .then(res => res.json())
-        .then(setAnimals)
-    }
+   // adding an _expand for each animal's customer, like we just did for getting a single animal
+//    In other situations ( like in the server side portion of NSS, or on the job ) you might not 
+//    have a library like json-server, and will use vanilla js instead.
+const getAnimals = () => {
+    return fetch("http://localhost:8088/animals?_expand=location&_expand=customer")
+    .then(res => res.json())
+    .then(setAnimals)
+  }
+
 
     const addAnimal = animalObj => {
         return fetch("http://localhost:8088/animals", {
@@ -38,7 +42,7 @@ export const AnimalProvider = (props) => {
     */
     return (
         <AnimalContext.Provider value={{
-            animals, getAnimals, addAnimal
+            animals, getAnimals, addAnimal, getAnimalById
         }}>
             {props.children}
         </AnimalContext.Provider>
