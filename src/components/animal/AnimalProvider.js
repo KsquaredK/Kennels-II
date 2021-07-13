@@ -24,6 +24,12 @@ export const AnimalProvider = (props) => {
         .then(getAnimals)
     }
 
+    const getAnimalById = (id) => {
+        return fetch(`http://localhost:8088/animals/${id}?_expand=location&_expand=customer`)
+        .then(res => res.json()) // note we don't set anything on state here. Why?
+    }
+    
+
     /*
         You return a context provider which has the
         `animals` state, `getAnimals` function,
