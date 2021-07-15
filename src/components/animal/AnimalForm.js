@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { LocationContext } from "../location/LocationProvider"
 import { AnimalContext } from "../animal/AnimalProvider"
 import { CustomerContext } from "../customer/CustomerProvider"
 import "./Animal.css"
 
 export const AnimalForm = () => {
-  const { addAnimal } = useContext(AnimalContext)
+  const { addAnimal, updateAnimal, getAnimalById } = useContext(AnimalContext)
   const { locations, getLocations } = useContext(LocationContext)
   const { customers, getCustomers } = useContext(CustomerContext)
 
@@ -16,22 +16,28 @@ export const AnimalForm = () => {
   Define the intial state of the form inputs with useState()
   */
 
-  const [animal, setAnimal] = useState({
-    name: "",
-    breed: "",
-    locationId: 0,
-    customerId: 0
-  });
-
+  const [animal, setAnimal] = useState({});
+  const [isLoading, setIsLoading] = useState(true)
   const history = useHistory();
+  const { animalId } = useParams()
 
   /*
   Reach out to the world and get customers state
   and locations state on initialization.
   */
   useEffect(() => {
-    getCustomers().then(getLocations)
-  }, [])
+    getCustomers().then(getLocations).then(() => {
+    if (animalId) {
+      getAnimalById(parseInt(animalId))
+      .then(animal => {
+          setAnimal(animal)
+          setIsLoading(false)
+        })
+    } else {
+      setIsLoading(false)
+    }
+  })
+}, [])
 
   //when a field changes, update state. The return will re-render and display based on the values in state
   //Controlled component
@@ -48,7 +54,7 @@ export const AnimalForm = () => {
   }
 
   const handleClickSaveAnimal = (event) => {
-    event.preventDefault() //Prevents the browser from submitting the form
+    // event.preventDefault() //Prevents the browser from submitting the form
 
     const locationId = parseInt(animal.locationId)
     const customerId = parseInt(animal.customerId)
@@ -56,8 +62,21 @@ export const AnimalForm = () => {
     if (locationId === 0 || customerId === 0) {
       window.alert("Please select a location and a customer")
     } else {
+      // prevent more clicks by user
+      setIsLoading(true)
+
       //Invoke addAnimal passing the new animal object as an argument
       //Once complete, change the url and display the animal list
+      if (animalId) {
+        updateAnimal ({
+          id: parseInt(animalId),
+          name: animal.name,
+          breed: animal.breed,
+          locationId: animal.locationId,
+          customerId: animal.customerId
+        })
+        .then(() => history.push("./animals"))
+      }
 
       const newAnimal = {
         name: animal.name,
@@ -111,9 +130,14 @@ export const AnimalForm = () => {
           </select>
         </div>
       </fieldset>
-      <button className="btn btn-primary" onClick={handleClickSaveAnimal}>
-        Save Animal
-          </button>
+      <button className="btn btn-primary"
+        disabled={isLoading}
+        onClick={event => {
+          event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+          handleClickSaveAnimal()
+        }}>
+        {animalId ? <>Save Animal</> : <>Add Animal</>}
+      </button>
     </form>
   )
 }
