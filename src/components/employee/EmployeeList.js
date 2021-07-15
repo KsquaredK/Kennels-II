@@ -31,11 +31,8 @@ return (
       <div className="employees">
       {
         employees.map(employee => {
-            // const location = locations.find(l => l.id === employee.locationId)
-
             return <EmployeeCard key={employee.id}
-            // location={location}
-            employee={employee} />
+            employee={employee}/>
     })
             }
       </div>
